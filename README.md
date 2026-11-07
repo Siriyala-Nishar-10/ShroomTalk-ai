@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ShroomTalk
 
 **ShroomTalk** is an intelligent platform providing mushroom cultivation advice, RAG-driven knowledge base queries, and financial/subsidy scheme guidance.
@@ -44,6 +43,7 @@ ShroomTalk/
 ### 1. Environment Configuration
 
 Copy the sample environment file and configure variables:
+
 ```bash
 cp .env.example .env
 ```
@@ -71,7 +71,9 @@ cd frontend
 npm install
 npm run dev
 ```
+
 =======
+
 # ShroomTalk 🍄
 
 An AI-powered financial advisory assistant for rural mushroom farmers.
@@ -106,4 +108,3 @@ Department of Computer Science and Engineering
 ---
 
 **ShroomTalk – Empowering Rural Mushroom Entrepreneurs with AI.** 🍄
->>>>>>> 6c90b0136fa72d2f3b1205878b2a47df1126936f
