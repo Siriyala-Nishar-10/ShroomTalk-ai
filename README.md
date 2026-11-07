@@ -1,6 +1,6 @@
-# ShroomTalk
+# ShroomTalk-AI
 
-**ShroomTalk** is an intelligent platform providing mushroom cultivation advice, RAG-driven knowledge base queries, and financial/subsidy scheme guidance.
+**ShroomTalk-AI** is an intelligent platform providing mushroom cultivation advice, RAG-driven knowledge base queries, and financial/subsidy scheme guidance.
 
 ---
 
