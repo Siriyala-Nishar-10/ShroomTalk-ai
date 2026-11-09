@@ -1,6 +1,4 @@
-Replace **`backend\README.md`** with the full text below. Open the file in VS Code, press **Ctrl+A**, paste the text, and save. **Do not paste it into PowerShell.**
 
-````markdown
 # ShroomTalk-AI Backend
 
 FastAPI backend for ShroomTalk-AI, a project that helps mushroom farmers understand basic financial calculations and find information about relevant government schemes.
