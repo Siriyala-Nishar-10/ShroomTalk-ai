@@ -1,3 +1,4 @@
+import secrets
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -11,6 +12,10 @@ class Settings(BaseSettings):
     ]
 
     database_url: str = ""
+
+    jwt_secret: str = ""
+    jwt_algorithm: str = "HS256"
+    jwt_expire_minutes: int = 60 * 24 * 7
 
     gemini_api_key: str = ""
     gemini_model: str = "gemini-2.5-flash"
@@ -29,3 +34,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+if not settings.jwt_secret:
+    # Fallback for local development only. Sessions end when the server restarts.
+    settings.jwt_secret = secrets.token_urlsafe(48)

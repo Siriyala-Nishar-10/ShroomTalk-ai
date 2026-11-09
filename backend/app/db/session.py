@@ -1,10 +1,14 @@
+import logging
 from collections.abc import Generator
 
 from fastapi import HTTPException, status
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import settings
+from app.db.base import Base
+
+logger = logging.getLogger("shroomtalk")
 
 
 def _normalize_database_url(database_url: str) -> str:
@@ -22,7 +26,11 @@ def _normalize_database_url(database_url: str) -> str:
 _database_url = _normalize_database_url(settings.database_url)
 
 engine = (
-    create_engine(_database_url, pool_pre_ping=True)
+    create_engine(
+        _database_url,
+        pool_pre_ping=True,
+        connect_args={"prepare_threshold": None},
+    )
     if _database_url
     else None
 )
@@ -37,6 +45,24 @@ SessionLocal = (
     if engine is not None
     else None
 )
+
+
+def init_db() -> bool:
+    """Create the vector extension (if allowed) and all tables."""
+    if engine is None:
+        return False
+
+    # Import models so they are registered on Base.metadata.
+    from app.db import models, user  # noqa: F401
+
+    try:
+        with engine.begin() as connection:
+            connection.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+    except Exception:
+        logger.exception("Could not create the vector extension (it may already exist)")
+
+    Base.metadata.create_all(bind=engine)
+    return True
 
 
 def get_db() -> Generator[Session, None, None]:
