@@ -5,12 +5,14 @@ from app.api.routes.health import router as health_router
 from app.core.config import settings
 
 app = FastAPI(
-    title="ShroomTalk API",
-    description="Backend API for the ShroomTalk rural mushroom micro-entrepreneur assistant.",
-    version="0.1.0",
+    title=settings.app_name,
+    description=(
+        "Backend API for mushroom-growing entrepreneurs, "
+        "financial tools, and scheme information."
+    ),
+    version="0.2.0",
 )
 
-# Add your deployed frontend URL to FRONTEND_ORIGINS in backend/.env.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.frontend_origins,
@@ -25,7 +27,7 @@ app.include_router(health_router, prefix="/api/v1")
 @app.get("/", tags=["Root"])
 def root():
     return {
-        "message": "Welcome to ShroomTalk API",
+        "message": "Welcome to ShroomTalk-AI API",
         "docs": "/docs",
         "health": "/api/v1/health",
     }

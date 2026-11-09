@@ -11,3 +11,4 @@ dist/
 .vite/
 *.db
 "@ | Set-Content .gitignore
+/passcode.txt
