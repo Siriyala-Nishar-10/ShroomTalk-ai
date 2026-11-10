@@ -1,4 +1,5 @@
 import logging
+import time
 
 import numpy as np
 from google import genai
@@ -38,20 +39,49 @@ def _client():
     if _client_instance is None:
         _client_instance = genai.Client(
             api_key=settings.gemini_api_key.strip(),
-            http_options=types.HttpOptions(timeout=30000),
+            http_options=types.HttpOptions(timeout=120000),
         )
     return _client_instance
 
 
+def _call_with_retry(fn, attempts: int = 3):
+    last_error = None
+    for attempt in range(attempts):
+        try:
+            return fn()
+        except Exception as error:
+            last_error = error
+            text = str(error)
+            busy = (
+                "503" in text
+                or "504" in text
+                or "UNAVAILABLE" in text
+                or "DEADLINE" in text
+            )
+            if not busy or attempt == attempts - 1:
+                raise
+            wait = 2 ** attempt
+            logger.warning(
+                "Gemini busy (%s). Retrying in %ss",
+                type(error).__name__,
+                wait,
+            )
+            time.sleep(wait)
+    raise last_error
+
+
 def embed_text(text: str, task_type: str) -> list[float]:
-    result = _client().models.embed_content(
-        model=settings.gemini_embedding_model,
-        contents=text,
-        config=types.EmbedContentConfig(
-            task_type=task_type,
-            output_dimensionality=settings.embedding_dimensions,
-        ),
-    )
+    def _once():
+        return _client().models.embed_content(
+            model=settings.gemini_embedding_model,
+            contents=text,
+            config=types.EmbedContentConfig(
+                task_type=task_type,
+                output_dimensionality=settings.embedding_dimensions,
+            ),
+        )
+
+    result = _call_with_retry(_once)
     vector = np.array(result.embeddings[0].values, dtype=float)
     norm = np.linalg.norm(vector)
     if norm > 0:
@@ -165,14 +195,17 @@ def build_prompt(message: str, excerpts: list[tuple[str, str, str]]) -> str:
 
 
 def _generate(message: str, language: str, excerpts: list[tuple[str, str, str]]) -> str:
-    response = _client().models.generate_content(
-        model=settings.gemini_model,
-        contents=build_prompt(message, excerpts),
-        config=types.GenerateContentConfig(
-            system_instruction=system_instruction(language),
-            temperature=0.2,
-        ),
-    )
+    def _once():
+        return _client().models.generate_content(
+            model=settings.gemini_model,
+            contents=build_prompt(message, excerpts),
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction(language),
+                temperature=0.2,
+            ),
+        )
+
+    response = _call_with_retry(_once)
     return (response.text or "").strip()
 
 
@@ -201,8 +234,6 @@ def answer_question(db: Session, message: str, language: str) -> dict:
     shown = [doc for doc in shown if doc is not None]
 
     def sources_for(mode: str) -> list[dict]:
-        # The mode is stored inside each source so that saved chat history
-        # can show the same label (the chat_messages table has no mode column).
         return [
             {
                 "scheme_code": doc.scheme_code,
