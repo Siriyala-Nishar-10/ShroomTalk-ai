@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+const PROFILE_STORAGE_KEY = "shroomtalk-ai-profile";
+
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: "grid" },
   { id: "assistant", label: "AI Assistant", icon: "message" },
@@ -2285,12 +2287,33 @@ export default function App() {
   const [screen, setScreen] = useState("landing");
   const [activePage, setActivePage] = useState("dashboard");
   const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState({
-    name: "",
-    email: "",
-    location: "",
-    language: "English",
-    stage: "Exploring",
+  const [profile, setProfile] = useState(() => {
+    const defaultProfile = {
+      name: "",
+      email: "",
+      location: "",
+      language: "English",
+      stage: "Exploring",
+    };
+
+    try {
+      const savedProfile = window.localStorage.getItem(PROFILE_STORAGE_KEY);
+      if (!savedProfile) return defaultProfile;
+
+      const parsedProfile = JSON.parse(savedProfile);
+      if (
+        parsedProfile &&
+        typeof parsedProfile === "object" &&
+        !Array.isArray(parsedProfile)
+      ) {
+        return { ...defaultProfile, ...parsedProfile };
+      }
+    } catch (error) {
+      // If browser storage is unavailable or contains invalid data,
+      // continue with the default profile instead of blocking the app.
+    }
+
+    return defaultProfile;
   });
   const [toast, setToast] = useState("");
 
@@ -2373,7 +2396,16 @@ export default function App() {
           }
         : current,
     );
-    setToast("Profile updated for this session.");
+
+    try {
+      window.localStorage.setItem(
+        PROFILE_STORAGE_KEY,
+        JSON.stringify(nextProfile),
+      );
+      setToast("Profile saved successfully on this device.");
+    } catch (error) {
+      setToast("Profile updated, but this browser could not save it.");
+    }
   }
 
   if (screen === "landing") {
