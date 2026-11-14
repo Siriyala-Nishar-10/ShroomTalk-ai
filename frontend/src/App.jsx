@@ -446,46 +446,18 @@ function LandingPage({ onLogin }) {
 
           <div className="hero-visual-wrap">
             <div className="hero-visual-card">
-              <div className="visual-label">
-                <span className="visual-label-icon">
-                  <Icon name="leaf" size={17} />
-                </span>
-                <span>
-                  <strong>Small steps, stronger plans</strong>
-                  <small>Tools built around your growing journey</small>
-                </span>
-              </div>
-              <MushroomIllustration />
-              <div className="visual-note">
-                <span className="visual-note-mark">
-                  <Icon name="sparkles" size={17} />
-                </span>
-                <span>
-                  <strong>Your experience matters.</strong>
-                  <small>
-                    Use your own figures to explore what may work for you.
-                  </small>
-                </span>
-              </div>
+              
+            
+              <div className="welcome-art">
+  <img
+    src="/mushroom-farm.png"
+    alt="Mushroom cultivation farm"
+    className="hero-farm-image"
+  />
+</div>
             </div>
-            <div className="floating-note floating-note-top">
-              <span className="floating-note-icon sage-icon">
-                <Icon name="calculator" size={18} />
-              </span>
-              <span>
-                <strong>Plan with numbers</strong>
-                <small>Clear, editable estimates</small>
-              </span>
-            </div>
-            <div className="floating-note floating-note-bottom">
-              <span className="floating-note-icon clay-icon">
-                <Icon name="book" size={18} />
-              </span>
-              <span>
-                <strong>Find a starting point</strong>
-                <small>Links to official sources</small>
-              </span>
-            </div>
+           
+            
           </div>
         </section>
 
@@ -655,12 +627,12 @@ function LoginPage({ onBack, onLogin }) {
             programme links in the ShroomTalk-AI workspace.
           </p>
           <div className="login-promo-art">
-            <MushroomIllustration />
-          </div>
-          <div className="login-promo-foot">
-            <Icon name="shield" size={17} />
-            <span>Demo workspace · No account data is sent to a server</span>
-          </div>
+  <img
+    src="/mushroom-farm.png"
+    alt="Mushroom cultivation farm"
+    className="hero-farm-image"
+  />
+</div>
         </section>
 
         <section className="login-card">
@@ -915,11 +887,12 @@ function DashboardPage({
           </button>
         </div>
         <div className="welcome-art">
-          <MushroomIllustration />
-          <span className="welcome-art-caption">
-            <Icon name="sparkles" size={15} /> Built for practical planning
-          </span>
-        </div>
+  <img
+    src="/mushroom-farm.png"
+    alt="Mushroom cultivation farm"
+    className="hero-farm-image"
+  />
+</div>
       </section>
 
       <section className="dashboard-estimates">
