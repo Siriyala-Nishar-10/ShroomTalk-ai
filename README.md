@@ -1,10 +1,10 @@
 # 🍄 ShroomTalk-AI
 
-**AI-driven business guidance and financial planning for rural mushroom micro-entrepreneurs.**
+**AI-driven business guidance, financial structuring, and hyper-local advisory platform for rural mushroom micro-entrepreneurs.**
 
-ShroomTalk-AI is a web application intended to help mushroom farmers and small rural enterprises explore cultivation costs, loan repayments, business viability, government schemes, and cultivation-related questions. It combines a FastAPI backend, a React/Vite frontend, PostgreSQL-backed application data, and Gemini-powered assistant capabilities.
+ShroomTalk-AI is a full-stack web application designed to help mushroom farmers and small rural enterprises explore cultivation costs, loan repayments, business viability, government schemes, and cultivation-related questions. It combines a robust FastAPI backend, a React/Vite frontend, PostgreSQL-backed application data, and Gemini-powered assistant capabilities.
 
-> **Project status:** Under development. Features and setup may change as the project evolves. Information from the assistant is for general guidance only—not a bank decision, financial advice, or a substitute for official scheme requirements.
+> **Project status:** Active development. Features and setup may change as the project evolves. Information from the assistant is for general guidance only—not a bank decision, financial advice, or a substitute for official scheme requirements.
 
 ## Contents
 
@@ -21,29 +21,28 @@ ShroomTalk-AI is a web application intended to help mushroom farmers and small r
 
 ## Features
 
-The project is being developed around these modules:
+The project is built around these core modules:
 
-- Farmer account, authentication, and profile
-- AI assistant for mushroom enterprise and scheme-related questions
-- Government scheme information
-- Loan and EMI calculations
-- Cultivation cost estimates
-- Business viability estimates
-- Calculation and chat history
-- Recommendations and reports (planned / evolving)
-- Knowledge-base administration (planned / evolving)
+- Farmer account, authentication, and user profile management
+- Gemini-powered AI assistant for enterprise queries, troubleshooting, and scheme-related guidance
+- Government agricultural and micro-enterprise scheme information catalog
+- Loan and EMI calculations tailored for rural banking options
+- Cultivation cost estimates (spawn, substrate, polybags, steam sterilization)
+- Business viability & break-even estimates
+- Calculation and interactive chat history logs
+- Knowledge-base administration and vernacular localization support
 
 Availability and completeness of individual features depend on the current deployment and project state.
 
 ## Technology
 
-| Area     | Technologies                                                              |
-| -------- | ------------------------------------------------------------------------- |
-| Frontend | React, Vite, CSS                                                          |
-| Backend  | Python, FastAPI, Pydantic, SQLAlchemy                                     |
-| Database | PostgreSQL; Supabase Postgres can be used                                 |
-| AI       | Google Gemini API; retrieval-augmented capabilities are under development |
-| Hosting  | Render (API and static frontend) or Vercel (frontend)                     |
+| Area    | Technologies                                                              |
+| ------- | ------------------------------------------------------------------------- |
+| Frontend| React, Vite, CSS, Responsive UI                                           |
+| Backend | Python, FastAPI, Pydantic, SQLAlchemy                                     |
+| Database| PostgreSQL; Supabase Postgres integration supported                       |
+| AI      | Google Gemini API; retrieval-augmented generation (RAG) capabilities      |
+| Hosting | Render (API web service and static frontend) or Vercel (frontend)         |
 
 ## Project structure
 
@@ -51,16 +50,16 @@ Availability and completeness of individual features depend on the current deplo
 ShroomTalk-ai/
 ├── backend/
 │   ├── app/
-│   │   ├── api/routes/       # API endpoints
-│   │   ├── core/             # Configuration
-│   │   ├── db/               # Database models and sessions
-│   │   ├── services/         # Assistant and scheme services
-│   │   └── main.py           # FastAPI application
+│   │   ├── api/routes/        # API endpoints (Auth, AI, Schemes, Calculator)
+│   │   ├── core/              # Configuration & security settings
+│   │   ├── db/                # Database models and session management
+│   │   ├── services/          # Assistant and scheme services
+│   │   └── main.py            # FastAPI application entrypoint
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── api.js            # Frontend API client
-│   │   ├── App.jsx
+│   │   ├── api.js             # Frontend API client
+│   │   ├── App.jsx            # Main React application component
 │   │   └── ...
 │   ├── package.json
 │   └── vite.config.js
@@ -68,15 +67,13 @@ ShroomTalk-ai/
 └── README.md
 ```
 
-The exact contents may change as development continues.
-
 ## Prerequisites
 
 - Git
 - Python 3.11 or later
 - Node.js and npm
-- A PostgreSQL database for backend features that require persistence
-- A Gemini API key for Gemini-powered assistant responses
+- A PostgreSQL database for backend data persistence
+- A Gemini API key for assistant responses
 
 ## Run locally
 
@@ -115,11 +112,11 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-The API will be available at `http://127.0.0.1:8000`. Interactive API documentation is at `http://127.0.0.1:8000/docs`.
+The API will be available at `http://127.0.0.1:8000`. Interactive API documentation is accessible at `http://127.0.0.1:8000/docs`.
 
 ### 3. Configure and run the frontend
 
-In a second terminal:
+In a separate terminal window:
 
 ```bash
 cd ShroomTalk-ai/frontend
@@ -138,7 +135,7 @@ Start the Vite development server:
 npm run dev
 ```
 
-Open the local URL printed by Vite, usually `http://localhost:5173`.
+Open the local URL printed by Vite, typically `http://localhost:5173`.
 
 ## Environment variables
 
@@ -146,26 +143,22 @@ Set secrets in local environment files or your hosting provider's environment se
 
 ### Backend
 
-| Variable                    | Purpose                                                                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `DATABASE_URL`              | PostgreSQL connection URI used by SQLAlchemy. Use a secure database URI; for Supabase on hosts without IPv6 connectivity, use Supabase's Session Pooler URI. |
-| `JWT_SECRET`                | Long, random secret used to sign authentication tokens. Set a stable secret in production.                                                                   |
-| `FRONTEND_ORIGINS`          | JSON array of permitted browser origins, e.g. `["http://localhost:5173"]`. Add the deployed frontend origin in production.                                   |
-| `GEMINI_API_KEY`            | Gemini API key for assistant features.                                                                                                                       |
-| `GEMINI_MODEL`              | Optional Gemini model override.                                                                                                                              |
-| `SUPABASE_URL`              | Optional Supabase project URL where used by the application.                                                                                                 |
-| `SUPABASE_ANON_KEY`         | Optional Supabase public/anonymous key where used.                                                                                                           |
-| `SUPABASE_SERVICE_ROLE_KEY` | Optional server-only Supabase service key. Never expose this in the frontend.                                                                                |
-
-The backend configuration has development defaults for some settings. Production deployments should explicitly set the required secrets and database URL. A valid `DATABASE_URL` must be a plain PostgreSQL URI, such as `postgresql://...`; use the exact username, host, port, and database name supplied by your provider. Passwords containing reserved URL characters must be URL-encoded. Do not include Markdown formatting or square brackets around the URI.
+| Variable                  | Purpose                                                                                                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`            | PostgreSQL connection URI used by SQLAlchemy. Use a secure database URI; for Supabase on hosts without IPv6 connectivity, use Supabase's Session Pooler URI. |
+| `JWT_SECRET`              | Long, random secret used to sign authentication tokens. Set a stable secret in production.                                                                 |
+| `FRONTEND_ORIGINS`        | JSON array of permitted browser origins, e.g. `["http://localhost:5173"]`. Add the deployed frontend origin in production.                                 |
+| `GEMINI_API_KEY`          | Gemini API key for assistant features.                                                                                                                     |
+| `GEMINI_MODEL`            | Optional Gemini model override.                                                                                                                          |
+| `SUPABASE_URL`            | Optional Supabase project URL where used by the application.                                                                                               |
+| `SUPABASE_ANON_KEY`       | Optional Supabase public/anonymous key where used.                                                                                                         |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional server-only Supabase service key. Never expose this in the frontend.                                                                            |
 
 ### Frontend
 
-| Variable            | Purpose                                                                                                                                                    |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `VITE_API_BASE_URL` | Base URL of the deployed API, e.g. `https://your-api.onrender.com`. Vite variables are included in the built frontend; do not put private secrets in them. |
-
-After changing a `VITE_` variable in Vercel or Render, rebuild/redeploy the frontend.
+| Variable            | Purpose                                                                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_API_BASE_URL` | Base URL of the deployed API, e.g. `https://shroomtalk-ai-xqcx.onrender.com`. Vite variables are included in the build; do not put private secrets here. |
 
 ## API
 
@@ -173,15 +166,9 @@ The backend API prefix is `/api/v1`.
 
 - `GET /` — API welcome message
 - `GET /api/v1/health` — API and database health status
-- `/docs` — interactive OpenAPI documentation
-
-Other routes cover authentication, profiles, schemes, calculations, and chat. See `/docs` for the current endpoints and request schemas.
-
-A health response with `"database":"unavailable"` indicates that the backend is running but cannot connect to PostgreSQL. Check the backend logs and database URI in the hosting provider; do not place credentials in issue reports or chat messages.
+- `/docs` — Interactive OpenAPI documentation
 
 ## Deploy
-
-The frontend and backend are separate services. Deploy both from the same GitHub repository, selecting the branch that contains the code you want to publish.
 
 ### Backend on Render
 
@@ -190,45 +177,23 @@ Create a **Web Service** connected to this repository:
 - **Root Directory:** `backend`
 - **Build Command:** `pip install -r requirements.txt`
 - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- Add backend environment variables in Render (at minimum, configure a production `DATABASE_URL`, `JWT_SECRET`, and `FRONTEND_ORIGINS`; add `GEMINI_API_KEY` for Gemini features).
+- Add backend environment variables in Render (`DATABASE_URL`, `JWT_SECRET`, `FRONTEND_ORIGINS`, `GEMINI_API_KEY`).
 
-For `FRONTEND_ORIGINS`, use a JSON array containing the exact deployed frontend origin, for example:
+### Frontend on Render (Live Demo)
 
-```text
-["https://your-frontend.onrender.com"]
-```
-
-Do not add a trailing slash to the origin. If using both a Render and Vercel frontend, list both origins in the array.
-
-### Frontend on Render
+The live application is accessible at [https://shroomtalk-ai-xqcx.onrender.com/](https://shroomtalk-ai-xqcx.onrender.com/).
 
 Create a **Static Site** connected to the repository:
 
 - **Root Directory:** `frontend`
 - **Build Command:** `npm install && npm run build`
 - **Publish Directory:** `dist`
-- Build environment variable: `VITE_API_BASE_URL=https://your-api.onrender.com`
-
-After the static site is deployed, add its exact `https://...onrender.com` origin to the backend's `FRONTEND_ORIGINS` and redeploy the backend if required.
-
-### Frontend on Vercel (alternative)
-
-Import the repository as a Vercel project and configure:
-
-- **Root Directory:** `frontend`
-- **Framework Preset:** Vite
-- **Build Command:** `npm run build`
-- **Output Directory:** `dist`
-- Environment variable: `VITE_API_BASE_URL=https://your-api.onrender.com`
-
-Add the Vercel deployment origin to backend `FRONTEND_ORIGINS`. Redeploy the frontend after changing its environment variable.
+- Build environment variable: `VITE_API_BASE_URL=https://shroomtalk-ai-xqcx.onrender.com`
 
 ## Security notes
 
-- Never commit `.env`, database connection strings, API keys, JWT secrets, or Supabase service-role keys.
-- If a credential is accidentally shared or committed, rotate/revoke it immediately and update the hosting environment.
-- Only expose public client keys to browser code; keep database and service-role credentials on the backend.
-- Use HTTPS for production deployments and allow only the frontend origins you control.
+- Never commit `.env`, database connection strings, API keys, JWT secrets, or service-role keys.
+- Use HTTPS for production deployments and restrict allowed browser origins via `FRONTEND_ORIGINS`.
 - Confirm current government scheme rules and financial terms with official sources.
 
 ## Team
