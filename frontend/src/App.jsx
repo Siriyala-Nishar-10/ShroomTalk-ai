@@ -66,13 +66,15 @@ function useHashRoute() {
 function Mark({ light }) {
   return (
     <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+      {/* Mushroom Cap */}
       <path
         fill={light ? "#cfe8d7" : "#1a4735"}
-        d="M16 4c6.2 0 11 3.6 12 8.2-1.2 1-4.4 1.8-12 1.8S5.2 13.2 4 12.2C5 7.6 9.8 4 16 4z"
+        d="M16 4C8.8 4 3 9.8 3 16c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2 0-6.2-5.8-12-13-12z"
       />
+      {/* Mushroom Stem */}
       <path
-        fill={light ? "#12382a" : "#eef3e6"}
-        d="M12.5 14.5h7v9.2a3.5 3.5 0 01-7 0z"
+        fill={light ? "#eef3e6" : "#2d6a4f"}
+        d="M12 18v6c0 2.2 1.8 4 4 4s4-1.8 4-4v-6h-8z"
       />
     </svg>
   );
