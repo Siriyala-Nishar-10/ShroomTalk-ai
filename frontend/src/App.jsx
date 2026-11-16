@@ -855,13 +855,6 @@ function Schemes() {
         {items.map((item) => (
           <article className="card" key={item.scheme_code + item.language_code}>
             <h3>{item.title}</h3>
-            <p>
-              <span className={item.verified ? "badge ok" : "badge"}>
-                {item.verified
-                  ? t(lang, "sc.verified")
-                  : t(lang, "sc.unverified")}
-              </span>
-            </p>
             <p>{item.content}</p>
             {item.official_url ? (
               <a href={item.official_url} target="_blank" rel="noreferrer">
