@@ -431,19 +431,6 @@ td {
   padding: 8px;
   border-bottom: 1px solid var(--line);
 }
-.badge {
-  display: inline-block;
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #f4e3c4;
-  color: var(--warn);
-  margin-right: 6px;
-}
-.badge.ok {
-  background: #d9f0e0;
-  color: var(--ok);
-}
 .notice,
 .banner,
 .error,
