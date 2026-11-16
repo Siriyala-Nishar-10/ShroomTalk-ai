@@ -231,7 +231,7 @@ const LINKS = [
   ["/assistant", "nav.assistant", "✦"],
   ["/schemes", "nav.schemes", "▣"],
   ["/loan", "nav.loan", "₹"],
-  ["/cultivation", "nav.cultivation", "<NavMushroom />"],
+  ["/cultivation", "nav.cultivation", "𓍊𓋼𓍊"],
   ["/business", "nav.business", "☰"],
   ["/profile", "nav.profile", "☺"],
 ];
